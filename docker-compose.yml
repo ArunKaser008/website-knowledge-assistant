@@ -1,0 +1,26 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: website_assistant_db
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: website_assistant
+      POSTGRES_USER: chatbot_user
+      POSTGRES_PASSWORD: chatbot_local_password
+      PGDATA: /var/lib/postgresql/data/pgdata
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U chatbot_user -d website_assistant"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres_data:
