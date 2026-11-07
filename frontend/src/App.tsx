@@ -67,6 +67,13 @@ function App() {
         },
         body: JSON.stringify({
           question: trimmedQuestion,
+          conversation_history: messages
+            .filter((message) => message.id !== 1)
+            .slice(-10)
+            .map((message) => ({
+              role: message.role,
+              content: message.content,
+            })),
         }),
       })
 
