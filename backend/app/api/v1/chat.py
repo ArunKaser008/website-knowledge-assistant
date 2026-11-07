@@ -29,6 +29,10 @@ def chat(
             db=db,
             question=request.question,
             top_k=request.top_k,
+            conversation_history=[
+                message.model_dump()
+                for message in request.conversation_history
+            ],
         )
 
     except ValueError as exc:
