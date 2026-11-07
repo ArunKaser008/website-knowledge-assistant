@@ -1,16 +1,13 @@
-#This file centralizes application settings.
 
-#BaseSettings: Reads configuration from environment variables and .env.
-#DATABASE_URL: Holds the PostgreSQL connection string.
-#PROJECT_ROOT: Locates .env relative to the Python file, so the configuration doesn't depend on which directory you launch the application from.
-#settings: A shared configuration object that other modules can import.
+"""Centralized application settings."""
 
 from pathlib import Path
 
+from pydantic import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-# Resolve the .env file from the project root.
+# Resolve .env from the project root.
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
 
@@ -20,6 +17,9 @@ class Settings(BaseSettings):
     APP_VERSION: str = "1.0.0"
 
     DATABASE_URL: str
+
+    # Gemini API configuration.
+    GEMINI_API_KEY: SecretStr | None = None
 
     model_config = SettingsConfigDict(
         env_file=PROJECT_ROOT / ".env",
